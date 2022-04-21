@@ -6,11 +6,12 @@ export class vec{
         this.x = x;
         this.y = y;
         this.z = z;
-    }
 
-    //define unary minus
-    neg(){
-        return new vec(-this.x, -this.y, -this.z);
+        // this.prototype.
+
+        // this.prototype.neg = function(){
+        //     return new vec(-this.x, -this.y, -this.z);
+        // }
     }
 
     add(v){
@@ -18,11 +19,23 @@ export class vec{
         this.y += v.y;
         this.z += v.z;
     }
-
+    
     add(x,y,z){
         this.x += x;
         this.y += y;
         this.z += z;
+    }
+
+    subtract(v){
+        this.x -= v.x;
+        this.y -= v.y;
+        this.z -= v.z;
+    }
+
+    multiply(v){
+        this.x *= v.x;
+        this.y *= v.y;
+        this.z *= v.z;
     }
 
     subtract(x,y,z){
@@ -181,6 +194,7 @@ export class cube{
     constructor(x,y,z,latura=1){
         this.edgeLength = latura;
         this.position = new vec(x,y,z);
+        this.rotation = new vec(0,0,0); // in radians
 
         this.vertices = [
             new vec(0,0,0),
@@ -215,8 +229,6 @@ export class cube{
             [255,0,255], [255,0,255],
             [0,255,255], [0,255,255]
         ];
-
-        this.rotation = new vec(0,0,0);
     }
 
     move(x,y,z){
@@ -243,13 +255,35 @@ export class cube{
     }
 
     rotate(rx,ry,rz, pivot=this.position){
+        //update this.rotation with the new values
         this.rotation.add(rx,ry,rz);
+        this.rotation.x %= 2*Math.PI;
+        this.rotation.y %= 2*Math.PI;
+        this.rotation.z %= 2*Math.PI;
+
         this.vertices.forEach(vert => {
             vert.subtract(pivot.x, pivot.y, pivot.z);
             vert.rotateYXZ(rx, ry, rz);
             //vert.rotateYXZ(ry, rx, rz);
             vert.add(pivot.x, pivot.y, pivot.z);
         })
+    }
+
+    // not properly understood; dont use
+    // rotateAxisAngle(axis, angle, pivot=this.position){ // this is not properly done....
+    //     axis.normalize()
+    //     this.rotate(
+    //         axis.x * angle,
+    //         axis.y * angle,
+    //         axis.z * angle,
+    //         pivot
+    //     );    
+    // }
+    
+    lookVector(){
+        let forward = new vec(0,0,1);
+        forward.rotateYXZ(this.rotation.x, this.rotation.y, this.rotation.z);
+        return forward;
     }
 }
 

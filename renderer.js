@@ -62,8 +62,8 @@ function project(object, fov, aspect, near, far){
         //console.log(projected.get(0,3))
         //console.log(projected)
         
-        let offset = 350
-        let scale = 100
+        let offset = 330
+        let scale = 350
         
         x1 = x1 * scale + offset
         y1 = y1 * scale + offset
@@ -139,14 +139,6 @@ let cam = new camera(0,0,0)
 // c.setPosition(0,0,2)
 // c.rotate(deg(30),0,0)
 
-// setInterval(() => {
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
-//     //c.rotate(0.01,0.05,0.03);
-//     c.rotate(0,0.05,0);
-//     let projVertices = project(c, deg(90), canvas.height / canvas.width, 1, 100);
-//     drawShape(c,projVertices);
-// }, 30)
-    
 // c.rotate(deg(30),deg(1),0)
 // let projVertices = project(c, deg(15), canvas.height / canvas.width, 1, 100);
 // drawShape(c, projVertices)
@@ -173,7 +165,7 @@ function valueChanged(){
         deg(sliderRotZ.value)
     );
 }
-
+    
 sliderX.addEventListener('input', valueChanged)
 sliderY.addEventListener('input', valueChanged)
 sliderZ.addEventListener('input', valueChanged)
@@ -182,4 +174,33 @@ sliderRotX.addEventListener('input', valueChanged)
 sliderRotY.addEventListener('input', valueChanged)
 sliderRotZ.addEventListener('input', valueChanged)
 
-valueChanged()
+//valueChanged()
+
+c.setPosition(0,0,2)
+c.setRotation(0,deg(15),deg(45))
+
+
+setInterval(() => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //c.rotate(0.01,0.05,0.03);
+    // let crtRot = c.getRotation();
+    // c.rotate(crtRot.x, crtRot.y + 0.05, crtRot.z)
+    c.rotate(0,0.05,0);
+    //c.rotateAxisAngle(new vec(sqrt3, sqrt3, sqrt3), deg(1));
+
+    //console.log(c.rotation)
+
+    //c.rotateAxisAngle(new vec(1,1,1), deg(5));
+    //x: -0.14563898261660474, y: 0.2554096424924897, z: 0.9558008167313202
+    // c.rotateAxisAngle(new vec(
+    //     -0.14563898261660474,
+    //     0.2554096424924897,
+    //     0.9558008167313202
+    // )
+    // , deg(5))
+    //c.rotateAxisAngle(c.lookVector(), deg(5))
+    //console.log(c.lookVector())
+    
+    let projVertices = project(c, deg(90), canvas.height / canvas.width, 1, 100);
+    drawShape(c,projVertices);
+}, 30)
